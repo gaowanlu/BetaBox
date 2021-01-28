@@ -1,17 +1,24 @@
-//@OpenJs对象构造器
-function OpenJs(dom){    
-    function factory(dom){
-        //@创建空对象openjs即返回值
-        let openjs={
-            class:null,
-            id:null,
-            dom:null
-        };
-        //为openjs对象添加dom属性即相对应的dom对象
-        openjs.dom=OPENJS_get_dom_obj(openjs,dom);
-        return openjs;
-    }
-    return factory(dom);
+/*!
+ * Open.js v0.0.11
+ * (c) 2021-2021 Wanlu Gao
+ * Released under the MIT License.
+ */
+function OpenJs(dom){//@OpenJs对象构造器
+//@------------------------The start of OpenJs------------------------
+function factory(dom){
+    //@创建空对象openjs即返回值
+    let openjs={
+        class:null,
+        id:null,
+        dom:null
+    };
+    //为openjs对象添加dom属性即相对应的dom对象
+    openjs.dom=OPENJS_get_dom_obj(openjs,dom);
+    return openjs;
+}
+
+return factory(dom);//返回OpenJs对象
+//@------------------------The end of OpenJs------------------------
 }
 
 //@判断dom标志的种类是class名称还是id名称
@@ -196,6 +203,4 @@ function OPENJS_deleteDOM(flag,index){
         }
     }
 }
-
-
 
