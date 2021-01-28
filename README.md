@@ -1,2 +1,2 @@
-# BetaBox
-A framework for quickly building web interface
+# Open.js
+A framework for JavaScript HTML DOM
