@@ -1,6 +1,6 @@
 /*!
  * Open.js v0.0.11
- * (c) 2021-2021 Wanlu Gao
+ * (c) 2021-2021 Wanlu Gao (China)
  * Released under the MIT License.
  */
 function OpenJs(dom){//@OpenJs对象构造器
@@ -16,7 +16,6 @@ function factory(dom){
     openjs.dom=OPENJS_get_dom_obj(openjs,dom);
     return openjs;
 }
-
 return factory(dom);//返回OpenJs对象
 //@------------------------The end of OpenJs------------------------
 }
@@ -78,7 +77,7 @@ function OPENJS_Px(flag){
 }
 
 //@创建新的HTML DOM元素
-function OPENJS_createDOM(tag){
+function OPENJS_createDOM(tag,styleObj,cssList){
     let type=typeof(tag);
     if(type!="string"){//@判断参数类型
         return null;
@@ -86,6 +85,18 @@ function OPENJS_createDOM(tag){
     let newNode=null;
     //@使用异常避免没有相应的tag名称而造成崩溃
     try{newNode=document.createElement(tag);}catch(err){return null;}
+    if(newNode){
+        try{//添加style
+            for(let i in styleObj){
+                try{newNode.style[i]=styleObj.style[i];}catch(err){}
+            }
+        }catch(err){}
+        try{//添加css name
+            for(let i=0;i<cssList.length;i++){
+                try{newNode.classList.add(cssList[i]);}catch(err){}
+            }
+        }catch(err){}
+    }
     return newNode;
 }
 
