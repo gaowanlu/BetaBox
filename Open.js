@@ -2,6 +2,7 @@
  * Open.js v0.0.11
  * (c) 2021-2021 Wanlu Gao (China)
  * Released under the MIT License.
+*  GitHub  https://github.com/gaowanlu/Open.js
  */
 function OpenJs(dom){//@OpenJs对象构造器
 //@------------------------The start of OpenJs------------------------
