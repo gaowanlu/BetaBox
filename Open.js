@@ -89,7 +89,7 @@ function OPENJS_createDOM(tag,styleObj,cssList){
     if(newNode){
         try{//添加style
             for(let i in styleObj){
-                try{newNode.style[i]=styleObj.style[i];}catch(err){}
+                try{newNode.style[i]=styleObj[i];}catch(err){}
             }
         }catch(err){}
         try{//添加css name
