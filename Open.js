@@ -6,7 +6,7 @@
  */
 function OpenJs(dom){//@OpenJs对象构造器
 //@------------------------The start of OpenJs------------------------
-function factory(dom){
+let factory=function(dom){
     //@创建空对象openjs即返回值
     let openjs={
         class:null,
