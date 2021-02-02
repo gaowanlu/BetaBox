@@ -1,5 +1,5 @@
 /*!
- * Open.js v0.0.11
+ * Open.js v0.1.00
  * (c) 2021-2021 Wanlu Gao (China)
  * Released under the MIT License.
 *  GitHub  https://github.com/gaowanlu/Open.js
@@ -53,6 +53,8 @@ function OPENJS_get_dom_obj(obj,string){
 function OPENJS_Px(flag){
     let type=typeof(flag);
     if(type=="string"){
+        //去掉全部空格
+        flag=flag.replace(/(^\s*)|(\s*$)/g, "");
         //检测字符串是否全为数组组成
         if(Number(flag)+'' !==NaN+'' ){//@全为数字
             //判断是否合法
@@ -62,10 +64,36 @@ function OPENJS_Px(flag){
                 flag=Math.floor(parseFloat(flag));
             }
             return parseInt(flag).toString()+"px";
-        }else{
-            return null;
         }
-    }else if(type=="number"){
+        //判断是否为"500px"格式
+        let stringArray=flag.split('');
+        if(stringArray.length>=3){
+            if(stringArray[stringArray.length-1]!="x"||stringArray[stringArray.length-2]!="p"){
+                return null;
+            }
+            let tempArray=stringArray.slice(0,stringArray.length-2);
+            let tempString=tempArray.join('');
+            //判断tempString是否全为数字
+            if(Number(tempString)+'' !==NaN+''){
+                return flag;
+            }
+        }
+        //判断是否为"89%"格式
+        stringArray=flag.split('');
+        if(stringArray.length>=2){
+            if(stringArray[stringArray.length-1]!='%'){
+                return null;
+            }
+            let tempArray=stringArray.slice(0,stringArray.length-1);
+            let tempString=tempArray.join('');
+            //判断tempString是否全为数字
+            if(Number(tempString+''!==NaN+'')){
+                return flag;
+            }
+        }
+        //错误格式参数
+        return null;
+    }else if(type=="number"){//数字类型
         if(flag<0){
             flag=0;
         }else{
@@ -76,6 +104,7 @@ function OPENJS_Px(flag){
         return null;
     }
 }
+
 
 //@创建新的HTML DOM元素
 function OPENJS_createDOM(tag,styleObj,cssList){
@@ -105,10 +134,10 @@ function OPENJS_createDOM(tag,styleObj,cssList){
 //@为DOM元素新加classname或者去掉classname
 function OPENJS_DELETE_OR_ADD_CLASSNAME(flag,classname,index,type){
     let DOMs=OpenJs(flag);
-    if(flag.id){//可以直接让OpenJS对象做flag
-        DOMs=OpenJs(flag.id);
-    }else if(flag.class){
-        DOMs=OpenJs(flag.class);
+    if(flag.id!=null){//可以直接让OpenJS对象做flag
+        DOMs=OpenJs("#"+flag.id);
+    }else if(flag.class!=null){
+        DOMs=OpenJs("."+flag.class);
     }
     if(DOMs&&DOMs.dom){//DOM获取成功
         if(DOMs.id){//获得一个节点
@@ -143,11 +172,13 @@ function OPENJS_style(flag,obj,index){
     if(typeof(obj)!="object"){
         return null;
     }
-    let DOMs=OpenJs(flag);
-    if(flag.id){//可以直接让OpenJS对象做flag
-        DOMs=OpenJs(flag.id);
-    }else if(flag.class){
-        DOMs=OpenJs(flag.class);
+    let DOMs={};
+    if(flag.id!=null){//可以直接让OpenJS对象做flag
+        DOMs=OpenJs("#"+flag.id);
+    }else if(flag.class!=null){
+        DOMs=OpenJs("."+flag.class);
+    }else{
+        DOMs=OpenJs(flag)        
     }
     if(DOMs&&DOMs.dom){//DOM获取成功
         if(DOMs.id){//获得一个节点
@@ -186,9 +217,9 @@ function OPENJS_addClass(flag,classname,index){
 function OPENJS_deleteDOM(flag,index){
     let DOMs=OpenJs(flag);
     if(flag.id){//可以直接让OpenJS对象做flag
-        DOMs=OpenJs(flag.id);
+        DOMs=OpenJs("#"+flag.id);
     }else if(flag.class){
-        DOMs=OpenJs(flag.class);
+        DOMs=OpenJs("."+flag.class);
     }
     if(DOMs&&DOMs.dom){//DOM获取成功
         if(DOMs.id){//获得一个节点
@@ -215,4 +246,3 @@ function OPENJS_deleteDOM(flag,index){
         }
     }
 }
-
