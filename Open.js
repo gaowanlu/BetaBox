@@ -1,5 +1,5 @@
 /*!
- * Open.js v0.1.20
+ * Open.js v0.1.5
  * (c) 2021-2021 Wanlu Gao (China)
  * Released under the MIT License.
 *  GitHub  https://github.com/gaowanlu/Open.js
@@ -107,7 +107,7 @@ function OpenJs(dom){//@OpenJs对象构造器
     
     
     //@创建新的HTML DOM元素
-    function OPENJS_createDOM(tag,styleObj,cssList){
+    function OPENJS_createDOM(tag,styleObj,cssList,state){
         let type=typeof(tag);
         if(type!="string"){//@判断参数类型
             return null;
@@ -117,13 +117,22 @@ function OpenJs(dom){//@OpenJs对象构造器
         try{newNode=document.createElement(tag);}catch(err){return null;}
         if(newNode){
             try{//添加style
-                for(let i in styleObj){
-                    try{newNode.style[i]=styleObj[i];}catch(err){}
+                if(typeof(styleObj)=="object"){
+                    for(let i in styleObj){
+                        try{newNode.style[i]=styleObj[i];}catch(err){}
+                    }                    
+                }else if(typeof(styleObj)=="string"){
+                    try{newNode.setAttribute("style",styleObj);}catch(err){}
                 }
             }catch(err){}
             try{//添加css name
                 for(let i=0;i<cssList.length;i++){
                     try{newNode.classList.add(cssList[i]);}catch(err){}
+                }
+            }catch(err){}
+            try{//添加属性
+                for(let i in state){
+                    try{newNode[i]=state[i];}catch(err){}
                 }
             }catch(err){}
         }
