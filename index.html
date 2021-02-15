@@ -2,109 +2,49 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Open.js</title>
-    <script type="text/javascript" src="./Open.js"></script>
-    <style>
-        *{
-            margin:0px;
-            padding: 0px;
-            border: 0px;
-        }
-        .div_1{
-            width:100px;
-            height:100px;
-            background-color: rgb(247, 86, 86);
-        }
-        .font{
-            font-size: 30px;
-        }
-    </style>
+    <title>Document</title>
+    <script type="text/javascript" src="./index.js"></script>
 </head>
-
-<body id="body">
-    <div id="content" style="width:100%;background-color: rgb(250, 173, 71);display: flex;flex-wrap: wrap;z-index: 10;position: absolute;">
-        <div class="div_1 " id="p_1">
-            点我试一试
-        </div>
-        <div class="div_1 " id="p_2">
-            234
-        </div>        
+<body>
+    <div id="app">
+        asd
     </div>
-
+    <div class="app">
+        hello
+    </div>
+    <div class="app">
+        hello
+    </div>
+    <div class="app">
+        hello
+    </div>
+    <div class="app">
+        hello
+    </div>
 </body>
-
 <script>
-    let view_width=640,view_height=700;
-    OpenJs("#p_1").dom.style.backgroundColor="red";
-    OpenJs(".div_1").dom[1].style.backgroundColor="#707070";
-    OpenJs(".div_1").dom[0].style.height=OPENJS_Px(view_height*0.5);
-
-
-    let col_width=parseInt(OpenJs("#p_1").dom.parentNode.style.width);
-    console.log(OpenJs("#p_1").dom.parentNode);
-    //设置第一个块的宽度
-    console.log(Math.floor(col_width/3));
-    OpenJs("#p_1").dom.style.width=OPENJS_Px(col_width/2);
-    OpenJs("#p_2").dom.style.width=OPENJS_Px(col_width/2);
-    
-    //删除节点
-    //OPENJS_deleteDOM(".div_1",-1);
-    console.log(typeof(OpenJs("#content").dom));
-
-    OpenJs("#p_1").dom.onclick=function(){
-    OPENJS_deleteDOM(".addbox",-1);
-    //新建节点
-    let newNode=OPENJS_createDOM("div");
-        if(newNode){
-            //设置宽度
-            newNode.style["width"]="100%";
-            //设置高度
-            newNode.style["height"]=OPENJS_Px(500);
-            //设置字体颜色
-            newNode.style.color="#ffffff";
-            //设置背景颜色
-            newNode.style.backgroundColor="rgb(0,0,0)";
-            //设置border-radius
-            newNode.style.borderRadius=OPENJS_Px(5);
-            //设置margin-top
-            newNode.style.marginTop=OPENJS_Px(100);
-            //设置position
-            newNode.style.position="fixed";
-            //添加classname
-            newNode.classList.add("addbox");
-            //添加innerHTML
-            newNode.innerHTML="点击黑色区域关闭弹窗";
-            //添加点击事件
-            newNode.onclick=function(){
-                OPENJS_deleteDOM(".addbox",0);
-            }
-            //插入到指定位置
-            OpenJs("#p_1").dom.parentNode.appendChild(newNode);
-        }
-    }
-    OpenJs("#p_2").dom.onclick=function(){
-        //删除点击p_1增加的节点
-        OPENJS_deleteDOM(".addbox",-1);
+    let $=Open;
+    let array=$.select("p",$.select("#app"));
+    $.style($.select(".app"),[
+    {
+        color:"red"
+    },{
+        fontSize:Open.px(50)
+    }],1);
+    //create newNode
+    let style_obj={
+        width:$.px(50),
+        height:$.px(50),
+        backgroundColor:"red"
+    };
+    $.print($.select(".app")[0]);
+    for(let i=0;i<$.select(".app").length;i++){
+        let newNode=$.createNode("div",style_obj);
+        $.select(".app")[i].appendChild(newNode);
     }
 
-    //OPENJS修改DOM的classname与
-    OPENJS_addClass(".div_1","font",-1);
-    OPENJS_deleteClass(".div_1","font",-1);
-
-    //OPENJS更改DOM style
-    OPENJS_style(".div_1",{
-        color:"#ffffff",
-        fontSize:"20px"
-    });
-    
-    function hello(string){
-        function ui(){
-            return "ui";
-        }
-        console.log(string+ui());
-    }
-    hello("op");
 
 </script>
 </html>
