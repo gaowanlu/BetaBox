@@ -4,7 +4,7 @@
  * Released under the MIT License.
  * GitHub  https://github.com/gaowanlu/Open.js
  */
-
+if(window.Open==undefined){
 window.Open=(function(){
     console.log("😜Open.js V0.1.4 Started IMageShare\t"+"http://119.3.180.71");
     console.log("😜Open.js GitHub:\t"+"https://github.com/gaowanlu/Open.js");
@@ -351,4 +351,9 @@ window.Open=(function(){
         };
     //--namespace.ajax--
     return namespace;
-    })();
+
+    })()//window.Open
+
+}else{//if(window.Open==undefined)
+    console.log("😜Open.js Error:window.Open,it already exists");
+}
