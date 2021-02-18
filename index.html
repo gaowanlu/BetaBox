@@ -5,46 +5,60 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script type="text/javascript" src="./index.js"></script>
+    <script type="text/javascript" src="./Open.js"></script>
 </head>
 <body>
     <div id="app">
-        asd
-    </div>
-    <div class="app">
-        hello
-    </div>
-    <div class="app">
-        hello
-    </div>
-    <div class="app">
-        hello
-    </div>
-    <div class="app">
-        hello
+
     </div>
 </body>
 <script>
-    let $=Open;
-    let array=$.select("p",$.select("#app"));
-    $.style($.select(".app"),[
-    {
-        color:"red"
-    },{
-        fontSize:Open.px(50)
-    }],1);
-    //create newNode
-    let style_obj={
-        width:$.px(50),
-        height:$.px(50),
-        backgroundColor:"red"
-    };
-    $.print($.select(".app")[0]);
-    for(let i=0;i<$.select(".app").length;i++){
-        let newNode=$.createNode("div",style_obj);
-        $.select(".app")[i].appendChild(newNode);
+    function defineReact(obj, key, node){
+        Object.defineProperty(obj, key, {
+            set: function(newValue){
+                node[key] = newValue;
+            },
+            get: function(){
+                return node;
+            }
+        });
+    }
+    function observe(vn, node){
+        Object.keys(vn).forEach((vn_key) => {
+            defineReact(vn, vn_key, node);
+        })
     }
 
+    let vn={
+        innerHTML:"123456789",
+        style:""
+    };
+
+
+    let node=Open.select("#app");
+    observe(vn,node);
+    vn.innerHTML="[123456789]";
+    vn.style="color:red;";
+
+
+    function vnode(tag){
+        let newnode={
+            dom_node:Open.createNode(tag),
+            tag:tag,
+            props:{},
+            childs:[],
+        };
+        for(let key in newnode.dom_node){
+            let type=typeof(newnode.dom_node[key]);
+            if(type=="object"){
+                newnode.props[key]=Object.assign({},newnode.dom_node[key]);
+            }else{
+                newnode.props[key]=newnode.dom_node[key];
+            }
+        }
+        return newnode;
+    }
+    
 
 </script>
 </html>
