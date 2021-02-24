@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+<body>
+    模板字符串=>编译tokens
+</body>
+<script>
+
+    /*扫描器
+    *template(模板字符串)
+    */
+    function Scanner(template){
+        this.template=template;//模板字符串
+        this._pointer=0;//指针
+        this._tail=this.template;//尾字符串
+        this.show=function(){//显示模板字符串
+            console.log(this.template);
+        }
+        this.scan=function(flag){
+            if(this._tail.indexOf(flag)==0){
+                //tag有多长，指针后移多少位
+                this._pointer+=flag.length;
+                //更新_tail
+                this._tail=this.template.substr(this._pointer);
+            }
+        }
+        this.scanUntil=function(flag){
+            //记录指针开始位置
+            let start=this._pointer;
+            //当尾巴字符串的开头不是stopFlag时，说明还没有扫描到stopFag
+            while(this._tail.indexOf(flag)!=0&&!this._over()){
+                //指针向后移动
+                this._pointer++;
+                //更新_tail
+                this._tail=this.template.substr(this._pointer);
+            }
+            //返回经过的字符串
+            return this.template.substr(start,this._pointer-start);
+        }
+        //判断是否扫描完毕
+        this._over=function(){
+            if(this._pointer==this.template.length){
+                return true;
+            }else{
+                return false;
+            }
+        }
+    }//END-function Scanner(template)
+
+    /*生成tokens
+    *parseTokens(template)
+    */
+    function parseTokens(template){
+        let tokens=[];
+        //创建扫描器
+        let scanner=new Scanner(template);
+        //扫描器工作
+        while(!scanner._over()){
+            //收集标记前的内容
+            let words=scanner.scanUntil("{{");
+            tokens.push(['text',words]);
+            scanner.scan("{{");
+            //收集{{key}}中的key
+            words=scanner.scanUntil("}}");
+            //判断key的类型
+            switch(words[0]){
+                case '/':tokens.push(['/',words.substr(1)]);break;
+                case '#':tokens.push(['#',words.substr(1)]);break;
+                default:if(words)tokens.push(['name',words]);;
+            }
+            scanner.scan("}}");
+        }
+        return nestTokens(tokens);//返回嵌套标准形式
+    }//function parseTokens(template)
+
+    /*将tokens变为嵌套形式
+    *tokens(未进行嵌套操作的tokens)
+    */
+    function nestTokens(tokens){
+        let nestToken=[];
+        let operateStack=[];
+        operateStack.push(nestToken);//整体入栈
+        for(let i=0;i<tokens.length;i++){
+            if(operateStack.length==0){//栈为空则结束
+                break;
+            }
+            switch(tokens[i][0]){
+                case '#':
+                    operateStack[operateStack.length-1].push(tokens[i]);
+                    tokens[i].push([]);
+                    operateStack.push(tokens[i][2]);
+                    break;
+                case '/':
+                    //出栈
+                    operateStack.pop();
+                    break;
+                default:
+                    //text直接入栈
+                    operateStack[operateStack.length-1].push(tokens[i]);
+                    break;
+            }
+        }
+        return nestToken;
+    }//END-function nestTokens(tokens)
+
+    /*将tokens变为HTML字符串
+    *parseHTML
+    */
+    function parseHTML(tokens,data){
+        console.log(tokens,data);
+    }//END-function parseHTML
+
+    function test(){
+        let data={
+            students:[
+                {'name':'小明','hobbies':['游泳','健身']},
+                {'name':'小红','hobbies':['足球','篮球','羽毛球']},
+                {'name':'小强','hobbies':['吃饭','睡觉']},
+            ]
+        };
+        let str=`
+        <div>
+            <ol>
+                {{#students}}
+                <li>
+                    学生{{item.name}}的爱好是
+                    <ol>
+                        {{#items.hobbies}}
+                        <li>{{.}}</li>
+                        {{/item.hobbies}}
+                    </ol>
+                </li>
+                {{/students}}
+            </ol>
+        </div>
+        `;
+        parseHTML(parseTokens(str),data);
+    }
+    test();
+</script>
+</html>
