@@ -1,0 +1,6 @@
+/*!
+ * Slago.js v0.0.1
+ * (c) 2021-2021 Wanlu Gao
+ * Released under the MIT License.
+ * GitHub  https://github.com/gaowanlu/Slago.js
+ */
