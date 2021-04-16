@@ -5,7 +5,9 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, "./dist"),
         filename: "bundle.js",
-        //publicPath: 'virtualPath'
+        environment: {
+            arrowFunction: false
+        }
     },
     devServer: {
         port: 8080,
