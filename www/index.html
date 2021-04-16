@@ -28,7 +28,16 @@
 <script>
     let HTMLString = "HELLO WORLD";
     console.log(HTMLString);
-    //document.getElementsByTagName("body")[0].innerHTML=HTMLString;
+    console.log(Slago.ajax.get({
+        url:"index.html",
+        data:{
+
+        },
+        call(ajax){
+            if(ajax.readyState == 4 && ajax.status == 200)
+                console.log(ajax.responseText);
+        }
+    }));
 </script>
 
 </html>
