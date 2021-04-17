@@ -34,8 +34,13 @@
 
         },
         call:function(ajax){
-            if(ajax.readyState == 4 && ajax.status == 200)
-                console.log(ajax.responseText);
+            if(ajax.readyState == 4 && ajax.status == 200){
+                //获得响应头
+                console.log(ajax.getAllResponseHeaders());
+                console.log(ajax.getResponseHeader('date'));
+                //停止ajax请求
+                ajax.abort();
+            }
         }
     }));
 </script>
